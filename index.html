@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<title>Dayflow — Full Day Tracker</title>
+<style>
+:root{--bg:#090d18;--panel:#11182a;--panel2:#151e33;--line:#26324b;--text:#f2f5ff;--muted:#9aa8c4;--purple:#9b8cff;--cyan:#67e8f9;--green:#70e1ad;--orange:#ffbd75;--pink:#ff8fbd}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 500px at 80% -10%,#24244b 0%,transparent 60%),var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer} .wrap{max-width:1200px;margin:auto;padding:22px 16px 60px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}.brand{display:flex;align-items:center;gap:11px}.logo{height:43px;width:43px;border-radius:14px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;color:#0a1020;font-weight:900;font-size:21px;box-shadow:0 8px 30px #8c7dff33}.brand h1{font-size:22px;margin:0;letter-spacing:-.6px}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}.head-actions{display:flex;gap:8px;align-items:center}.pill,.btn{border:1px solid var(--line);background:#121a2b;color:var(--text);padding:10px 13px;border-radius:12px}.btn.primary{background:linear-gradient(135deg,#9b8cff,#6ccdf4);border:0;color:#08101e;font-weight:800}.btn.small{padding:7px 10px;font-size:12px}.date{color:var(--muted);font-size:13px;margin:0 0 15px}
+.hero{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-bottom:14px}.card{background:linear-gradient(145deg,#141c30ee,#101727ee);border:1px solid var(--line);border-radius:20px;padding:18px;min-width:0;box-shadow:0 14px 40px #00000014}.eyebrow{font-size:11px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase;font-weight:800}.hero h2{font-size:clamp(24px,4vw,36px);letter-spacing:-1px;margin:8px 0}.hero p{color:var(--muted);margin:0}.progressline{height:9px;border-radius:20px;background:#26314a;overflow:hidden;margin:17px 0 8px}.progressline span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:20px;transition:width .25s}.progress-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:13px;border:1px solid var(--line);border-radius:15px;background:#0e1525}.stat .ico{font-size:18px}.stat strong{display:block;font-size:22px;margin:6px 0 1px}.stat small{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}.span-8{grid-column:span 8}.span-7{grid-column:span 7}.span-6{grid-column:span 6}.span-5{grid-column:span 5}.span-4{grid-column:span 4}.span-12{grid-column:span 12}.card h3{margin:0 0 4px;font-size:16px}.sub{color:var(--muted);font-size:12px;margin:0 0 15px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.field{display:flex;flex-direction:column;gap:6px;margin:10px 0}.field label{font-size:12px;color:var(--muted)}input,select,textarea{width:100%;min-width:0;border:1px solid var(--line);border-radius:10px;background:#0a1120;color:var(--text);padding:10px 11px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--purple)}input[type=checkbox]{width:18px;height:18px;accent-color:var(--purple)}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 10px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.habit-list{display:grid;gap:8px}.habit{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:#0e1525}.habit label{flex:1}.habit.done label{text-decoration:line-through;color:var(--muted)}.habit .remove{background:none;border:0;color:#7f8ba7;font-size:18px}
+.hour-list{display:grid;gap:7px;max-height:480px;overflow:auto;padding-right:3px}.hour{display:grid;grid-template-columns:68px 1fr auto;gap:9px;align-items:center;padding:9px;border:1px solid var(--line);border-radius:11px;background:#0e1525}.hour time{font-size:12px;color:var(--cyan);font-weight:800}.hour input{padding:8px}.hour select{padding:8px}.hour .savehour{padding:8px 10px}
+.task-list{display:grid;gap:8px}.task{display:flex;align-items:center;gap:9px;padding:10px;border:1px solid var(--line);border-radius:11px}.task span{flex:1;overflow-wrap:anywhere}.task.done span{text-decoration:line-through;color:var(--muted)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#0c1424;color:var(--muted);border-radius:99px;padding:8px 11px;font-size:12px}.chip.active{color:var(--text);border-color:var(--purple);background:#282444}
+.water{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.glass{width:31px;height:40px;border:1px solid #35415d;border-radius:7px 7px 11px 11px;background:#0b1324;position:relative;overflow:hidden}.glass.filled{background:linear-gradient(180deg,#67e8f966,#67e8f9cc);border-color:#67e8f9}.meal-row{display:grid;grid-template-columns:78px 1fr;gap:10px;align-items:center;margin:8px 0}.meal-row label{color:var(--muted);font-size:12px}.notice{border:1px solid #3c345e;background:#211d39;color:#c9c2ff;padding:10px 12px;border-radius:12px;font-size:12px;margin-top:12px}.empty{color:var(--muted);font-size:13px;padding:8px 0}.footer{text-align:center;color:#74819c;font-size:11px;margin-top:24px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.span-8,.span-7,.span-6,.span-5,.span-4{grid-column:span 12}.wrap{padding:15px 12px 40px}.card{padding:15px}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.hour{grid-template-columns:56px 1fr}.hour select{grid-column:2}.hour .savehour{grid-column:2;justify-self:start}.formgrid{grid-template-columns:1fr}.brand h1{font-size:19px}}
+
+:root{--purple:#a18aff;--cyan:#71e4f2;--pink:#ff9ecb;--green:#9ff0c2}
+body{background:radial-gradient(ellipse at 12% -10%,#292050 0,transparent 42%),radial-gradient(ellipse at 100% 25%,#123442 0,transparent 34%),#080a15}
+.card{border-radius:22px;box-shadow:0 18px 55px #0002;animation:dfRise .4s both}
+.btn.primary{background:linear-gradient(120deg,var(--purple),var(--cyan));color:#101327;font-weight:800;border:0}
+.task.done,.habit.done{background:#12261f;border-color:#70e1ad66}
+.task.done span,.habit.done label{text-decoration:line-through;color:#a8c6b7}
+#monthChart{display:flex;align-items:end;gap:4px;height:150px;overflow-x:auto;border-bottom:1px solid var(--line);padding:10px 2px 0}
+.monthbar{flex:1;min-width:8px;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:4px}
+.monthbar i{display:block;width:72%;border-radius:6px 6px 1px 1px;background:linear-gradient(180deg,var(--cyan),var(--purple));min-height:2px}
+.monthbar i.selected{background:linear-gradient(180deg,var(--pink),var(--purple));box-shadow:0 0 13px #ff9ecb55}
+.insight{padding:11px;border:1px solid #ffffff13;background:#0b1020;border-radius:12px;margin:8px 0;font-size:12px}
+#toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;z-index:100;background:#e0fff0;color:#10271d;padding:11px 16px;border-radius:99px;font-weight:800;transition:.25s;pointer-events:none}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.sparkle{position:fixed;z-index:99;pointer-events:none;font-size:18px;animation:dfSpark .7s ease-out forwards}
+@keyframes dfRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes dfSpark{to{opacity:0;transform:translate(var(--dx),-65px) scale(1.4)}}
+
+</style>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div class="brand"><div class="logo">D</div><div><h1>dayflow<span style="color:var(--cyan)">.</span></h1><p>Your day, made visible.</p></div></div>
+ <div class="head-actions"><input aria-label="Choose date" id="dayDate" type="date" style="width:auto;max-width:155px"><button class="btn small" id="exportBtn">Export JSON ↗</button></div>
+</header>
+<p class="date" id="todayLabel"></p>
+<section class="hero">
+ <div class="card">
+  <div class="eyebrow">Daily overview</div><h2>Make today count. ✨</h2><p>Log the real day, not the perfect day. Small honest entries beat guesswork.</p>
+  <div class="progressline"><span id="progressBar"></span></div>
+  <div class="progress-meta"><span id="progressText">0% of your daily habits done</span><span id="taskProgress">0 tasks done</span></div>
+  <div class="notice">🔒 Your entries stay in this browser on this device. They are not sent to a server. Export a backup if you want to keep them.</div>
+ </div>
+ <div class="card"><div class="eyebrow">Today at a glance</div><div class="stats">
+  <div class="stat"><span class="ico">📚</span><strong id="studyStat">0m</strong><small>Study logged</small></div>
+  <div class="stat"><span class="ico">🏋️</span><strong id="gymStat">0m</strong><small>Workout logged</small></div>
+  <div class="stat"><span class="ico">📱</span><strong id="screenStat">0m</strong><small>Screen time entered</small></div>
+  <div class="stat"><span class="ico">💧</span><strong id="waterStat">0/8</strong><small>Water glasses</small></div>
+ </div></div>
+</section>
+<div class="grid">
+ <section class="card span-7"><div class="row"><h3>🕒 Hour-by-hour timeline</h3><button class="btn small" id="fillHours">Create 24 slots</button></div><p class="sub">Add what you actually did in each hour. Save each slot as you go.</p><div class="hour-list" id="hourList"></div></section>
+ <section class="card span-5"><h3>🎯 Daily tasks</h3><p class="sub">Pick a few things that matter today.</p><div class="row"><input id="taskInput" placeholder="e.g. Finish maths practice" maxlength="100"><button class="btn primary" id="addTask">Add</button></div><div class="task-list" id="taskList" style="margin-top:12px"></div></section>
+ <section class="card span-6"><h3>📚 Focus & training</h3><p class="sub">Enter totals manually; this page cannot read other apps automatically.</p>
+  <div class="formgrid">
+   <div class="field"><label>Study (minutes)</label><input id="studyMin" type="number" min="0" max="1440" placeholder="e.g. 180"></div>
+   <div class="field"><label>Workout (minutes)</label><input id="gymMin" type="number" min="0" max="600" placeholder="e.g. 60"></div>
+   <div class="field"><label>Phone screen time (minutes)</label><input id="screenMin" type="number" min="0" max="1440" placeholder="e.g. 210"></div>
+   <div class="field"><label>Distractions / wasted time (minutes)</label><input id="wasteMin" type="number" min="0" max="1440" placeholder="e.g. 45"></div>
+  </div><div class="actions"><button class="btn primary" id="saveFocus">Save totals</button></div>
+ </section>
+ <section class="card span-6"><h3>😴 Sleep schedule</h3><p class="sub">Log last night's sleep and tonight's target.</p>
+  <div class="formgrid"><div class="field"><label>Sleep time</label><input id="sleepStart" type="time" value="23:00"></div><div class="field"><label>Wake-up time</label><input id="sleepEnd" type="time" value="07:00"></div><div class="field"><label>Sleep duration (calculated)</label><input id="sleepDuration" readonly value="8h 0m"></div><div class="field"><label>Target bedtime</label><input id="sleepTarget" type="time" value="23:00"></div></div>
+  <div class="actions"><button class="btn primary" id="saveSleep">Save sleep</button></div>
+ </section>
+ <section class="card span-5"><h3>✅ Daily habits</h3><p class="sub">Build consistency, not a perfect streak.</p><div class="habit-list" id="habitList"></div><div class="row" style="margin-top:10px"><input id="habitInput" placeholder="Add a habit" maxlength="60"><button class="btn" id="addHabit">+</button></div></section>
+ <section class="card span-7"><h3>🥗 Meals & hydration</h3><p class="sub">Quick food notes and a simple water counter.</p>
+  <div class="meal-row"><label>Breakfast</label><input id="mealBreakfast" placeholder="What did you eat?"></div>
+  <div class="meal-row"><label>Lunch</label><input id="mealLunch" placeholder="What did you eat?"></div>
+  <div class="meal-row"><label>Dinner</label><input id="mealDinner" placeholder="What did you eat?"></div>
+  <div class="meal-row"><label>Snacks</label><input id="mealSnacks" placeholder="Optional notes"></div>
+  <div class="row" style="margin-top:16px"><div><strong>💧 Water</strong><div class="sub" style="margin:2px 0 0">1 glass = your chosen glass size</div></div><strong id="waterCount">0 / 8 glasses</strong></div>
+  <div class="water" id="waterGlasses"></div><div class="actions"><button class="btn" id="waterMinus">− Glass</button><button class="btn" id="waterPlus">+ Glass</button><button class="btn primary" id="saveMeals">Save meals</button></div>
+ </section>
+ <section class="card span-12"><div class="row"><div><h3>🧠 End-of-day reflection</h3><p class="sub" style="margin-top:4px">One minute to turn today's data into tomorrow's plan.</p></div></div>
+  <div class="formgrid"><div class="field"><label>What went well?</label><textarea id="wentWell" rows="2" placeholder="One thing you're proud of..."></textarea></div><div class="field"><label>What distracted you?</label><textarea id="reflectionDistraction" rows="2" placeholder="No judgement—just notice the pattern."></textarea></div><div class="field"><label>One thing to improve tomorrow</label><textarea id="tomorrowPlan" rows="2" placeholder="Make it small and specific."></textarea></div><div class="field"><label>Mood / energy</label><select id="mood"><option value="">Choose...</option><option>Low</option><option>Okay</option><option>Good</option><option>Great</option></select></div></div>
+  <div class="actions"><button class="btn primary" id="saveReflection">Save reflection</button><button class="btn" id="resetDay">Reset this date</button></div>
+ </section>
+</div>
+
+<section class="card span-12" id="monthlyReport">
+ <div class="row" style="flex-wrap:wrap"><div><h3>📈 Monthly rewind</h3><p class="sub">Choose any date to see that month’s graph and useful nudges.</p></div>
+ <div class="row"><input id="reportDate" type="date" style="width:auto"><button class="btn primary" id="showReport">Show month</button></div></div>
+ <div class="stats" style="margin:12px 0"><div class="stat"><span>📚</span><strong id="monthStudy">0m</strong><small>Study this month</small></div><div class="stat"><span>🏋️</span><strong id="monthGym">0m</strong><small>Workout this month</small></div><div class="stat"><span>☑️</span><strong id="monthTasks">0%</strong><small>Tasks completed</small></div><div class="stat"><span>🔥</span><strong id="currentStreak">0</strong><small>Current task streak</small></div></div>
+ <p class="eyebrow" id="monthLabel">MONTHLY COMPLETION</p><div id="monthChart"></div>
+ <h3 style="margin-top:20px">🪞 Helpful nudges</h3><p class="sub">Based on what you logged—not assumptions about you.</p><div id="insights"></div>
+ <div class="notice">Data stays in this browser on this device. Export a backup regularly; clearing browser data can erase it.</div>
+</section>
+
+<div class="footer">DAYFLOW · Made for your phone · Data is stored locally in this browser</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const STORE='dayflow-v1';
+const today=new Date(); const localDate=d=>{const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)};
+$('dayDate').value=localDate(today);
+let currentDate=$('dayDate').value;
+const defaultData=()=>({hours:{},tasks:[],habits:[{name:'Wake up on time',done:false},{name:'No phone during study',done:false},{name:'Move / stretch',done:false},{name:'Read or revise',done:false}],focus:{studyMin:0,gymMin:0,screenMin:0,wasteMin:0},sleep:{sleepStart:'23:00',sleepEnd:'07:00',sleepTarget:'23:00'},water:0,meals:{},reflection:{},habitChecks:{}});
+let all=loadAll(); let data=getDay(currentDate);
+function loadAll(){try{return JSON.parse(localStorage.getItem(STORE)||'{}')}catch(e){return {}}}
+function getDay(d){return all[d]|| (all[d]=defaultData())}
+function persist(){all[currentDate]=data;localStorage.setItem(STORE,JSON.stringify(all));renderStats()}
+function safe(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function mins(n){n=Math.max(0,Number(n)||0);return n>=60?`${Math.floor(n/60)}h ${n%60}m`:`${n}m`}
+function renderDate(){const d=new Date(currentDate+'T12:00:00');$('todayLabel').textContent=d.toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})+' · Your personal daily log';}
+function renderHours(){const list=$('hourList');list.innerHTML='';for(let h=0;h<24;h++){const key=String(h).padStart(2,'0');const v=data.hours[key]||{text:'',type:'Unplanned'};const end=String((h+1)%24).padStart(2,'0');const el=document.createElement('div');el.className='hour';el.innerHTML=`<time>${key}:00–${end}:00</time><input aria-label="Activity at ${key}:00" id="ht-${key}" value="${safe(v.text)}" placeholder="What did you do?"><select aria-label="Activity type at ${key}:00" id="hs-${key}">${['Unplanned','Sleep','Study','Workout','Meals','Travel','Break','Phone','Other'].map(t=>`<option ${v.type===t?'selected':''}>${t}</option>`).join('')}</select><button class="btn small savehour" data-hour="${key}">Save</button>`;list.appendChild(el)}list.querySelectorAll('[data-hour]').forEach(b=>b.onclick=()=>{const k=b.dataset.hour;data.hours[k]={text:$('ht-'+k).value,type:$('hs-'+k).value};persist();b.textContent='Saved ✓';setTimeout(()=>b.textContent='Save',900)})}
+function renderTasks(){const list=$('taskList');list.innerHTML='';if(!data.tasks.length)list.innerHTML='<div class="empty">No tasks yet. Add one above.</div>';data.tasks.forEach((t,i)=>{const el=document.createElement('div');el.className='task'+(t.done?' done':'');el.innerHTML=`<input type="checkbox" ${t.done?'checked':''} aria-label="Mark task done"><span>${safe(t.text)}</span><button class="remove" aria-label="Delete task">×</button>`;el.querySelector('input').onchange=e=>{data.tasks[i].done=e.target.checked;persist();renderTasks()};el.querySelector('button').onclick=()=>{data.tasks.splice(i,1);persist();renderTasks()};list.appendChild(el)})}
+function renderHabits(){const list=$('habitList');list.innerHTML='';if(!data.habits.length)list.innerHTML='<div class="empty">Add habits you want to build.</div>';data.habits.forEach((h,i)=>{const el=document.createElement('div');el.className='habit'+(h.done?' done':'');el.innerHTML=`<input type="checkbox" ${h.done?'checked':''} aria-label="Complete habit"><label>${safe(h.name)}</label><button class="remove" aria-label="Remove habit">×</button>`;el.querySelector('input').onchange=e=>{data.habits[i].done=e.target.checked;persist();renderHabits()};el.querySelector('button').onclick=()=>{data.habits.splice(i,1);persist();renderHabits()};list.appendChild(el)})}
+function renderWater(){$('waterCount').textContent=`${data.water} / 8 glasses`;$('waterStat').textContent=`${data.water}/8`;$('waterGlasses').innerHTML=Array.from({length:8},(_,i)=>`<button class="glass ${i<data.water?'filled':''}" aria-label="${i+1} glasses of water" data-glass="${i+1}"></button>`).join('');$('waterGlasses').querySelectorAll('[data-glass]').forEach(b=>b.onclick=()=>{data.water=Number(b.dataset.glass);persist();renderWater()})}
+function renderStats(){const f=data.focus||{};$('studyStat').textContent=mins(f.studyMin);$('gymStat').textContent=mins(f.gymMin);$('screenStat').textContent=mins(f.screenMin);$('taskProgress').textContent=`${data.tasks.filter(t=>t.done).length}/${data.tasks.length} tasks done`;const habits=data.habits.length?data.habits.filter(h=>h.done).length/data.habits.length:0;const tasks=data.tasks.length?data.tasks.filter(t=>t.done).length/data.tasks.length:0;const pct=Math.round((habits+tasks)/((data.habits.length?1:0)+(data.tasks.length?1:0)||1)*100);$('progressBar').style.width=pct+'%';$('progressText').textContent=pct+'% of habits & tasks done';}
+function fillForm(){for(const id of ['studyMin','gymMin','screenMin','wasteMin'])$(id).value=data.focus[id]??0;for(const id of ['sleepStart','sleepEnd','sleepTarget'])$(id).value=data.sleep[id]||'';for(const id of ['mealBreakfast','mealLunch','mealDinner','mealSnacks'])$(id).value=data.meals[id]||'';for(const id of ['wentWell','reflectionDistraction','tomorrowPlan','mood'])$(id).value=data.reflection[id]||'';calcSleep()}
+function calcSleep(){const a=$('sleepStart').value,b=$('sleepEnd').value;if(!a||!b)return;let start=+a.slice(0,2)*60+ +a.slice(3),end=+b.slice(0,2)*60+ +b.slice(3);if(end<=start)end+=1440;const n=end-start;$('sleepDuration').value=`${Math.floor(n/60)}h ${n%60}m`}
+function render(){renderDate();renderHours();renderTasks();renderHabits();renderWater();fillForm();renderStats()}
+$('dayDate').onchange=()=>{persist();currentDate=$('dayDate').value||localDate(new Date());data=getDay(currentDate);render()};
+$('addTask').onclick=()=>{const text=$('taskInput').value.trim();if(!text)return;data.tasks.push({text,done:false});$('taskInput').value='';persist();renderTasks()};
+$('taskInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('addTask').click()});
+$('addHabit').onclick=()=>{const name=$('habitInput').value.trim();if(!name)return;data.habits.push({name,done:false});$('habitInput').value='';persist();renderHabits()};
+$('habitInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('addHabit').click()});
+$('saveFocus').onclick=()=>{for(const id of ['studyMin','gymMin','screenMin','wasteMin'])data.focus[id]=Math.max(0,Number($(id).value)||0);persist();$('saveFocus').textContent='Saved ✓';setTimeout(()=>$('saveFocus').textContent='Save totals',900)};
+$('saveSleep').onclick=()=>{for(const id of ['sleepStart','sleepEnd','sleepTarget'])data.sleep[id]=$(id).value;calcSleep();persist();$('saveSleep').textContent='Saved ✓';setTimeout(()=>$('saveSleep').textContent='Save sleep',900)};
+$('sleepStart').onchange=calcSleep;$('sleepEnd').onchange=calcSleep;
+$('waterPlus').onclick=()=>{data.water=Math.min(30,data.water+1);persist();renderWater()};$('waterMinus').onclick=()=>{data.water=Math.max(0,data.water-1);persist();renderWater()};
+$('saveMeals').onclick=()=>{for(const id of ['mealBreakfast','mealLunch','mealDinner','mealSnacks'])data.meals[id]=$(id).value;persist();$('saveMeals').textContent='Saved ✓';setTimeout(()=>$('saveMeals').textContent='Save meals',900)};
+$('saveReflection').onclick=()=>{for(const id of ['wentWell','reflectionDistraction','tomorrowPlan','mood'])data.reflection[id]=$(id).value;persist();$('saveReflection').textContent='Saved ✓';setTimeout(()=>$('saveReflection').textContent='Save reflection',900)};
+$('fillHours').onclick=()=>{renderHours();$('hourList').scrollTop=0};
+$('resetDay').onclick=()=>{if(confirm('Reset all entries for '+currentDate+'? This cannot be undone unless you exported a backup.')){delete all[currentDate];data=getDay(currentDate);persist();render()}};
+$('exportBtn').onclick=()=>{persist();const blob=new Blob([JSON.stringify(all,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='dayflow-backup-'+currentDate+'.json';a.click();URL.revokeObjectURL(url)};
+render();
+</script>
+
+<div id="toast">Saved ✨</div>
+<script>
+(function(){
+const $=id=>document.getElementById(id);let soundOn=true;
+function ping(){if(!soundOn)return;try{let C=window.AudioContext||window.webkitAudioContext,c=new C(),t=c.currentTime;[659.25,783.99,987.77].forEach((f,i)=>{let o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(.001,t+i*.09);g.gain.exponentialRampToValueAtTime(.09,t+i*.09+.02);g.gain.exponentialRampToValueAtTime(.001,t+i*.09+.18);o.connect(g);g.connect(c.destination);o.start(t+i*.09);o.stop(t+i*.09+.2)});setTimeout(()=>c.close(),600)}catch(e){}}
+function toast(s){let t=$("toast");t.textContent=s;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1500)}
+function spark(el){let r=el.getBoundingClientRect();["✨","✦","💖"].forEach((x,i)=>{let n=document.createElement("span");n.className="sparkle";n.textContent=x;n.style.left=(r.left+r.width/2)+"px";n.style.top=(r.top+r.height/2)+"px";n.style.setProperty("--dx",((i-1)*22)+"px");document.body.appendChild(n);setTimeout(()=>n.remove(),800)})}
+function score(d){let tn=d.tasks?.length||0,td=d.tasks?.filter(x=>x.done).length||0,hn=d.habits?.length||0,hd=d.habits?.filter(x=>x.done).length||0;return Math.round(((tn?td/tn:0)+(hn?hd/hn:0))/((tn?1:0)+(hn?1:0)||1)*100)}
+function streak(){let dates=Object.keys(all).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)).sort(),run=0,best=0;for(let d of dates){let x=all[d];if(x.tasks?.length&&x.tasks.every(t=>t.done)){run++;best=Math.max(best,run)}else run=0}let cur=0,dt=new Date(currentDate+"T12:00:00"),valid=d=>{let x=all[d];return !!(x&&x.tasks?.length&&x.tasks.every(t=>t.done))};if(!valid(currentDate))dt.setDate(dt.getDate()-1);while(valid(dt.toISOString().slice(0,10))){cur++;dt.setDate(dt.getDate()-1)}$("currentStreak").textContent=cur}
+function fmt(n){n=Math.max(0,+n||0);return n>=60?Math.floor(n/60)+"h "+n%60+"m":n+"m"}
+function report(){let date=$("reportDate").value||currentDate,month=date.slice(0,7),p=month.split("-").map(Number),days=new Date(p[0],p[1],0).getDate(),study=0,gym=0,tn=0,td=0,bars=[];for(let n=1;n<=days;n++){let key=month+"-"+String(n).padStart(2,"0"),d=all[key]||{tasks:[],habits:[],focus:{}},f=d.focus||{};study+=+f.studyMin||0;gym+=+f.gymMin||0;tn+=d.tasks?.length||0;td+=d.tasks?.filter(t=>t.done).length||0;bars.push({n,key,s:all[key]?score(d):0})}$("monthLabel").textContent=new Date(p[0],p[1]-1,1).toLocaleDateString(undefined,{month:"long",year:"numeric"})+" · DAILY SCORE";$("monthStudy").textContent=fmt(study);$("monthGym").textContent=fmt(gym);$("monthTasks").textContent=(tn?Math.round(td/tn*100):0)+"%";$("monthChart").innerHTML=bars.map(b=>`<div class="monthbar" title="${b.key}: ${b.s}%"><i class="${b.key===date?"selected":""}" style="height:${Math.max(2,b.s)}%"></i><small>${b.n%5===0||b.n===1?b.n:""}</small></div>`).join("");let d=all[date]||{tasks:[],habits:[],focus:{},water:0},f=d.focus||{},notes=[];if(!all[date])notes.push("No saved data for this date yet.");if((+f.studyMin||0)<120)notes.push("Study logged below 2 hours. Try one focused 25-minute block if study is a priority.");if((+f.screenMin||0)>240)notes.push("Screen time is above 4 hours in your entry. Try a phone-free block and compare.");if((+f.wasteMin||0)>60)notes.push("More than an hour marked as distraction. Identify one repeat trigger.");if(d.tasks?.length&&d.tasks.some(t=>!t.done))notes.push(d.tasks.filter(t=>!t.done).length+" task(s) are still incomplete.");if((d.water||0)<5)notes.push("Water log is under 5 glasses. Treat this as a reminder, not a medical target.");if(!notes.length)notes.push("No obvious gaps in the data you logged. Keep tracking consistently to spot trends.");$("insights").innerHTML=notes.map(x=>`<div class="insight">✨ ${x}</div>`).join("");streak()}
+$("reportDate").value=currentDate;$("showReport").onclick=report;$("reportDate").onchange=report;
+const soundBtn=document.createElement("button");soundBtn.className="btn small";soundBtn.textContent="🔔 Sound on";soundBtn.onclick=()=>{soundOn=!soundOn;soundBtn.textContent=soundOn?"🔔 Sound on":"🔕 Sound off";if(soundOn)ping()};document.querySelector("header").appendChild(soundBtn);
+const oldTasks=renderTasks;renderTasks=function(){oldTasks();document.querySelectorAll("#taskList .task").forEach((el,i)=>{let cb=el.querySelector('input[type=checkbox]');if(!cb||el.querySelector('.checkmark'))return;let b=document.createElement("button");b.className="checkmark";b.textContent="✓";b.setAttribute("aria-label","Toggle task");cb.style.display="none";cb.parentNode.insertBefore(b,cb);b.onclick=()=>{data.tasks[i].done=!data.tasks[i].done;persist();renderTasks();if(data.tasks[i].done){ping();spark(b);toast("Mission complete! ✨")}report()}})};
+const oldHabits=renderHabits;renderHabits=function(){oldHabits();document.querySelectorAll("#habitList .habit").forEach((el,i)=>{let cb=el.querySelector('input[type=checkbox]');if(!cb||el.querySelector('.checkmark'))return;let b=document.createElement("button");b.className="checkmark";b.textContent="✓";b.setAttribute("aria-label","Toggle habit");cb.style.display="none";cb.parentNode.insertBefore(b,cb);b.onclick=()=>{data.habits[i].done=!data.habits[i].done;persist();renderHabits();if(data.habits[i].done){ping();spark(b);toast("Habit complete! 🌿")}report()}})};
+const oldStats=renderStats;renderStats=function(){oldStats();report()};
+const oldDate=$("dayDate").onchange;$("dayDate").onchange=function(){oldDate();$("reportDate").value=currentDate;report()};
+const oldAddTask=$("addTask").onclick;$("addTask").onclick=function(){oldAddTask();report()};
+const oldAddHabit=$("addHabit").onclick;$("addHabit").onclick=function(){oldAddHabit();report()};
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}))}
+report();
+})();
+</script>
+
+</body>
+</html>
